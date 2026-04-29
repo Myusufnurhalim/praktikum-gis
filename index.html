@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>latihan leaflet JS</title>
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+</head>
+<body>
+    <div id="map" style="height: 400px;"></div>
+    <script>
+
+        // 1. Inisialisasi Peta
+var map = L.map('map').setView([-6.2000, 106.8166], 15);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+// 2. Buat Marker (Titik Pusat)
+var centerPoint = L.marker([-6.2000, 106.8166]).addTo(map);
+
+// 3. Proses Buffering dengan Turf.js
+var pointGeoJSON = centerPoint.toGeoJSON(); // Konversi marker ke GeoJSON
+var buffered = turf.buffer(pointGeoJSON, 0.5, {units: 'kilometers'}); // Jarak 0.5 km
+
+// 4. Tampilkan Buffer ke Peta
+L.geoJSON(buffered, {
+    style: function(feature) {
+        return {
+            color: "red",
+            weight: 2,
+            fillOpacity: 0.2
+        };
+    }
+}).addTo(map);
+    </script> 
+</body>
+</html>
